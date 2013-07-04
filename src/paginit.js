@@ -35,24 +35,17 @@
 			      nextElement = $('<span>', {'class': config.cssPrefix+'next'}).html(config.nextContent).appendTo(navbar);
 
 			      // build css
-			      $this.css({
-			          'position': 'relative',
-			      });
 			      wrapper.css({
 				        'overflow': 'hidden',
-                'width': config.width
+                'width': config.width,
+                'position': 'relative'
 			      });
-            wrapperElements.css({
-                'position': 'absolute',
-                'width': config.width*nbElements,
-            });
 			      elements.css({
-				        'float': 'left',
-				        'width': config.width,
-				        'visibility': 'hidden'
+				        'display': 'none',
+				        'width': config.width
 			      });
-			      currentElement.css({
-				        'visibility': 'visible'
+            elements.eq(current).css({
+				        'display': 'block'
 			      });
 			      navbar.css({
 			          'width': config.width,
@@ -101,57 +94,28 @@
 			      });
 		    });
 	      function goTo(element) {
-			    if(current<element) {
-				      while(current<element && hasNext()) {
-					        next();
-				      }
-			    } else if(current>element) {
-				      while(current>element && hasPrev()) {
-					        prev();
-				      }
-			    }
+            elements.eq(current).hide();
+            current = element;
+            elements.eq(current).show(250);
+            selectElement.val(current);
+            if(!hasNext())
+                nextElement.css({'opacity': 0.5, 'cursor': 'default'});
+            else
+                prevElement.css({'opacity': 1, 'cursor': 'pointer'});
+			      if(!hasPrev())
+				        prevElement.css({'opacity': 0.5, 'cursor': 'default'});
+			      else
+                nextElement.css({'opacity': 1, 'cursor': 'pointer'});
 		    }
 		
 		    function next() {
-			      if(!hasNext()) {
-				       return false;
-			      }
-			      $(config.matchingElement).eq(current).css({
-				        'visibility': 'hidden'
-			      });
-			      current++;
-			      $(config.matchingElement).eq(current).css({
-				        'visibility': 'visible'
-			      });
-            wrapperElements.css({
-                'left': parseFloat(wrapperElements.css('left').split('px')[0])-config.width
-            });
-			      selectElement.val(current);
-			      if(!hasNext()) {
-			          nextElement.css({'opacity': 0.5, 'cursor': 'default'});
-			      }
-			      prevElement.css({'opacity': 1, 'cursor': 'pointer'});
+            if(hasNext())
+                goTo(parseInt(current)+1);
 		    }
 		
 		    function prev() {
-			      if(!hasPrev()) {
-				        return false;
-			      }
-			      $(config.matchingElement).eq(current).css({
-				        'visibility': 'hidden'
-			      });
-			      current--;
-			      $(config.matchingElement).eq(current).css({
-				        'visibility': 'visible'
-			      });
-            wrapperElements.css({
-                'left': parseFloat(wrapperElements.css('left').split('px')[0])+config.width
-            });
-			      selectElement.val(current);
-			      if(!hasPrev()) {
-				        prevElement.css({'opacity': 0.5, 'cursor': 'default'});
-			      }
-			      nextElement.css({'opacity': 1, 'cursor': 'pointer'});
+            if(hasPrev())
+                goTo(parseInt(current)-1);
 		    }
 		
 		    function hasNext() {
