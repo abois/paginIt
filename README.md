@@ -68,3 +68,17 @@ Options
    - The show effect duration
    - default: `0`
 
+Example:
+
+```js
+    $(document).ready(function () {
+        $('#book').paginIt({
+            matchingElement: $('[data-title]'), //or '[data-title]'
+            effectDuration: 250,
+            nextContent: '> next',
+            prevContent: '< prev',
+            width: 300,
+            cssPrefix: 'book-'
+        });
+    });
+```
