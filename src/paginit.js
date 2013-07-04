@@ -39,7 +39,7 @@
 			          
 			      });
 			      wrapper.css({
-				        'width': nbElements*config.width,
+				        'width': config.width,
 				        'overflow': 'hidden'
 			      });
 			      elements.css({
