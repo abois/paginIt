@@ -13,30 +13,32 @@
 		    return this.each(function () {
 			      $this = $(this);
 			      // Init
-			      nbElements = $this.find(config.matchingElement).length;
+			      elements = $this.find(config.matchingElement);
+			      nbElements = elements.length;
 			      current = 0;
-			
+			      currentElement = elements.eq(current);
 			
 			      // Build html
 			      nextElement = $('<a>', {'href': '#', 'class': config.cssPrefix+'next'}).html(config.nextContent).prependTo($this);
-			      currentElement = $('<span>', {'class': config.cssPrefix+'current'}).text(current).prependTo($this);
+			      inputElement = $('<span>', {'class': config.cssPrefix+'current'}).text(current).prependTo($this);
 			      selectElement = $('<select>', {'class': config.cssPrefix+'choice'}).prependTo($this);
 			      $(config.matchingElement).each(function (i,val) {
 				      $('<option>', {'value': i}).text($(val).attr('data-title') ? $(val).attr('data-title') : i).appendTo(selectElement);
 			      });
 			      prevElement = $('<a>', {'href': '#', 'class': config.cssPrefix+'prev'}).html(config.prevContent).prependTo($this);
 			
+			      
 			      // build css
-			      $('.graphs').css({
+			      $this.css({
 				      'position': 'absolute',
 				      'width': nbElements
 			      });
-			      $('.graphs article').css({
+			      elements.css({
 				      'float': 'left',
 				      'width': config.width,
 				      'visibility': 'hidden'
 			      });
-			      $('.graphs article').eq(current).css({
+			      currentElement.css({
 				      'visibility': 'visible'
 			      });
 			
@@ -44,7 +46,7 @@
 			      selectElement.on('change', function () {
 				        var val = $(this).val();
 				        goTo(val);
-				        currentElement.text(current);
+				        inputElement.text(current);
 			      });
 			      nextElement.on('click', function () {
 				      next();
@@ -82,7 +84,7 @@
 					        'margin-left': parseFloat(element.css('margin-left').split('px')[0])-config.width
 				        });
 			      }
-			      $('.current').text(current);
+			      inputElement.text(current);
 		    }
 		
 		    function prev() {
@@ -102,7 +104,7 @@
 					        'margin-left': parseFloat(element.css('margin-left').split('px')[0])+config.width
 				        });
 			      }
-			      $('.current').text(current);
+			      inputElement.text(current);
 		    }
 		
 		    function hasNext() {
@@ -120,5 +122,3 @@
 		    }
     };
 })(jQuery);
-
-
