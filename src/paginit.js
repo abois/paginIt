@@ -21,37 +21,73 @@
 			      currentElement = elements.eq(current);
 			
 			      // Build html
-			      navbar = $('<nav>', {'class': config.cssPrefix+'navbar'}).prependTo($this);
-			      prevElement = $('<a>', {'href': '#', 'class': config.cssPrefix+'prev'}).html(config.prevContent).appendTo(navbar);
+			      wrapper = $('<div>', {'class': 'paginit-wrapper'}).appendTo($this);
+			      elements.each(function () {
+			          $(this).appendTo(wrapper);
+			      });
+			      navbar = $('<nav>', {'class': config.cssPrefix+'navbar'}).prependTo(wrapper);
+			      prevElement = $('<span>', {'class': config.cssPrefix+'prev'}).html(config.prevContent).appendTo(navbar);
 			      selectElement = $('<select>', {'class': config.cssPrefix+'choice'}).appendTo(navbar);
 			      $(config.matchingElement).each(function (i,val) {
-				      $('<option>', {'value': i}).text($(val).attr('data-title') ? $(val).attr('data-title') : i).appendTo(selectElement);
+				      $('<option>', {'value': i}).text($(val).attr('data-title') ? $(val).attr('data-title') : i+1).appendTo(selectElement);
 			      });
-			      nextElement = $('<a>', {'href': '#', 'class': config.cssPrefix+'next'}).html(config.nextContent).appendTo(navbar);
-//			      inputElement = $('<span>', {'class': config.cssPrefix+'current'}).text(current).appendTo(navbar);
+			      nextElement = $('<span>', {'class': config.cssPrefix+'next'}).html(config.nextContent).appendTo(navbar);
 
 			      // build css
 			      $this.css({
-				      'position': 'absolute',
-				      'width': nbElements
+			          'position': 'relative',
+			          
+			      });
+			      wrapper.css({
+				        'width': nbElements*config.width,
+				        'overflow': 'hidden'
 			      });
 			      elements.css({
-				      'float': 'left',
-				      'width': config.width,
-				      'visibility': 'hidden'
+				        'float': 'left',
+				        'width': config.width,
+				        'visibility': 'hidden'
 			      });
 			      currentElement.css({
-				      'visibility': 'visible'
+				        'visibility': 'visible'
 			      });
 			      navbar.css({
-			        'width': config.width
+			          'width': config.width,
+			          'text-align': 'center'
 			      });
+			      nextElement.css({
+			          'display': 'inline-block',
+                'text-decoration': 'none',
+                'font-family': 'sans-serif',
+                'padding': '2px 5px',
+                'margin': '1px 3px',
+                'width': '10px',
+                'cursor': 'pointer'
+			      });
+			      prevElement.css({
+			          'text-decoration': 'none',
+                'font-family': 'sans-serif',
+                'padding': '2px 5px',
+                'margin': '1px 3px',
+                'width': '10px',
+                'cursor': 'pointer'
+			      });
+			      selectElement.css({
+			          'display': 'inline-block',
+                'text-decoration': 'none',
+                'font-family': 'sans-serif',
+                'min-width': '100px'
+			      });
+
+			      if(current === 0) {
+			          prevElement.css({'opacity': 0.5, 'cursor': 'default'});
+			      } else if(current === nbElements) {
+			          nextElement.css({'opacity': 0.5, 'cursor': 'default'});
+			      }
 
 			      // EVENTS
 			      selectElement.on('change', function () {
 				        var val = $(this).val();
 				        goTo(val);
-				        inputElement.text(current);
 			      });
 			      nextElement.on('click', function () {
 				      next();
@@ -89,11 +125,15 @@
 					        'margin-left': parseFloat(element.css('margin-left').split('px')[0])-config.width
 				        });
 			      }
-			      inputElement.text(current);
+			      selectElement.val(current);
+			      if(!hasNext()) {
+			          nextElement.css({'opacity': 0.5, 'cursor': 'default'});
+			      }
+			      prevElement.css({'opacity': 1, 'cursor': 'pointer'});
 		    }
 		
 		    function prev() {
-			    if(!hasPrev()) {
+			      if(!hasPrev()) {
 				        return false;
 			      }
 			      $(config.matchingElement).eq(current).css({
@@ -109,7 +149,11 @@
 					        'margin-left': parseFloat(element.css('margin-left').split('px')[0])+config.width
 				        });
 			      }
-			      inputElement.text(current);
+			      selectElement.val(current);
+			      if(!hasPrev()) {
+				        prevElement.css({'opacity': 0.5, 'cursor': 'default'});
+			      }
+			      nextElement.css({'opacity': 1, 'cursor': 'pointer'});
 		    }
 		
 		    function hasNext() {
