@@ -5,7 +5,8 @@
 			    matchingElement: 'article',
 			    cssPrefix: 'paginit-',
 			    prevContent: '&lt;',
-			    nextContent: '&gt;'
+			    nextContent: '&gt;',
+          effectDuration: 0
 		    };
 		    if (options) {
 			      $.extend(true, config, options);
@@ -96,16 +97,14 @@
 	      function goTo(element) {
             elements.eq(current).hide();
             current = element;
-            elements.eq(current).show(250);
+            elements.eq(current).show(config.effectDuration);
             selectElement.val(current);
+            prevElement.css({'opacity': 1, 'cursor': 'pointer'});
+            nextElement.css({'opacity': 1, 'cursor': 'pointer'});
             if(!hasNext())
                 nextElement.css({'opacity': 0.5, 'cursor': 'default'});
-            else
-                prevElement.css({'opacity': 1, 'cursor': 'pointer'});
-			      if(!hasPrev())
+            if(!hasPrev())
 				        prevElement.css({'opacity': 0.5, 'cursor': 'default'});
-			      else
-                nextElement.css({'opacity': 1, 'cursor': 'pointer'});
 		    }
 		
 		    function next() {
