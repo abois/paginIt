@@ -22,8 +22,9 @@
 			
 			      // Build html
 			      wrapper = $('<div>', {'class': 'paginit-wrapper'}).appendTo($this);
+            wrapperElements = $('<div>').appendTo(wrapper);
 			      elements.each(function () {
-			          $(this).appendTo(wrapper);
+			          $(this).appendTo(wrapperElements);
 			      });
 			      navbar = $('<nav>', {'class': config.cssPrefix+'navbar'}).prependTo(wrapper);
 			      prevElement = $('<span>', {'class': config.cssPrefix+'prev'}).html(config.prevContent).appendTo(navbar);
@@ -36,12 +37,15 @@
 			      // build css
 			      $this.css({
 			          'position': 'relative',
-			          
 			      });
 			      wrapper.css({
-				        'width': config.width,
-				        'overflow': 'hidden'
+				        'overflow': 'hidden',
+                'width': config.width
 			      });
+            wrapperElements.css({
+                'position': 'absolute',
+                'width': config.width*nbElements,
+            });
 			      elements.css({
 				        'float': 'left',
 				        'width': config.width,
@@ -119,12 +123,9 @@
 			      $(config.matchingElement).eq(current).css({
 				        'visibility': 'visible'
 			      });
-			      for(var i=0;i<current;i++) {
-			          var element = $(config.matchingElement).eq(i);
-				        element.css({
-					        'margin-left': parseFloat(element.css('margin-left').split('px')[0])-config.width
-				        });
-			      }
+            wrapperElements.css({
+                'left': parseFloat(wrapperElements.css('left').split('px')[0])-config.width
+            });
 			      selectElement.val(current);
 			      if(!hasNext()) {
 			          nextElement.css({'opacity': 0.5, 'cursor': 'default'});
@@ -143,12 +144,9 @@
 			      $(config.matchingElement).eq(current).css({
 				        'visibility': 'visible'
 			      });
-			      for(i=0;i<=current;i++) {
-			          var element = $(config.matchingElement).eq(i);
-				        element.css({
-					        'margin-left': parseFloat(element.css('margin-left').split('px')[0])+config.width
-				        });
-			      }
+            wrapperElements.css({
+                'left': parseFloat(wrapperElements.css('left').split('px')[0])+config.width
+            });
 			      selectElement.val(current);
 			      if(!hasPrev()) {
 				        prevElement.css({'opacity': 0.5, 'cursor': 'default'});
