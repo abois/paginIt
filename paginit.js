@@ -3,15 +3,17 @@
 		    var config = {
 			    width: 800,
 			    matchingElement: 'article',
-			    cssPrefix: 'paginit',
-			    prevContent: '<',
-			    nextContent: '>'
+			    cssPrefix: 'paginit-',
+			    prevContent: '&lt;',
+			    nextContent: '&gt;'
 		    };
 		    if (options) {
 			      $.extend(true, config, options);
 		    }
 		    return this.each(function () {
 			      $this = $(this);
+			      $this.addClass('paginit');
+
 			      // Init
 			      elements = $this.find(config.matchingElement);
 			      nbElements = elements.length;
@@ -19,15 +21,15 @@
 			      currentElement = elements.eq(current);
 			
 			      // Build html
-			      nextElement = $('<a>', {'href': '#', 'class': config.cssPrefix+'next'}).html(config.nextContent).prependTo($this);
-			      inputElement = $('<span>', {'class': config.cssPrefix+'current'}).text(current).prependTo($this);
-			      selectElement = $('<select>', {'class': config.cssPrefix+'choice'}).prependTo($this);
+			      navbar = $('<nav>', {'class': config.cssPrefix+'navbar'}).prependTo($this);
+			      prevElement = $('<a>', {'href': '#', 'class': config.cssPrefix+'prev'}).html(config.prevContent).appendTo(navbar);
+			      selectElement = $('<select>', {'class': config.cssPrefix+'choice'}).appendTo(navbar);
 			      $(config.matchingElement).each(function (i,val) {
 				      $('<option>', {'value': i}).text($(val).attr('data-title') ? $(val).attr('data-title') : i).appendTo(selectElement);
 			      });
-			      prevElement = $('<a>', {'href': '#', 'class': config.cssPrefix+'prev'}).html(config.prevContent).prependTo($this);
-			
-			      
+			      nextElement = $('<a>', {'href': '#', 'class': config.cssPrefix+'next'}).html(config.nextContent).appendTo(navbar);
+//			      inputElement = $('<span>', {'class': config.cssPrefix+'current'}).text(current).appendTo(navbar);
+
 			      // build css
 			      $this.css({
 				      'position': 'absolute',
@@ -41,7 +43,10 @@
 			      currentElement.css({
 				      'visibility': 'visible'
 			      });
-			
+			      navbar.css({
+			        'width': config.width
+			      });
+
 			      // EVENTS
 			      selectElement.on('change', function () {
 				        var val = $(this).val();

@@ -1,5 +1,18 @@
-.next,
-.prev {
+.paginit>nav {
+  background: #EEE;
+  text-align: center;
+}
+.paginit>nav>a {
   display: inline-block;
-  border: 1px solid #DADADA; 
+  text-decoration: none;
+  font-family: sans-serif;
+  padding: 2px 5px;
+  margin: 1px 3px;
+  width: 10px;
+}
+.paginit>nav>select {
+  display: inline-block;
+  text-decoration: none;
+  font-family: sans-serif;
+  min-width: 100px;
 }
