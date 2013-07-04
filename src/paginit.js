@@ -29,7 +29,7 @@
 			      });
 			      navbar = $('<nav>', {'class': config.cssPrefix+'navbar'}).prependTo(wrapper);
 			      prevElement = $('<span>', {'class': config.cssPrefix+'prev'}).html(config.prevContent).appendTo(navbar);
-			      selectElement = $('<select>', {'class': config.cssPrefix+'choice'}).appendTo(navbar);
+			      selectElement = $('<select>', {'class': config.cssPrefix+'choices'}).appendTo(navbar);
 			      $(config.matchingElement).each(function (i,val) {
 				      $('<option>', {'value': i}).text($(val).attr('data-title') ? $(val).attr('data-title') : i+1).appendTo(selectElement);
 			      });
@@ -58,7 +58,7 @@
                 'font-family': 'sans-serif',
                 'padding': '2px 5px',
                 'margin': '1px 3px',
-                'width': '10px',
+                'min-width': '10px',
                 'cursor': 'pointer'
 			      });
 			      prevElement.css({
@@ -66,7 +66,7 @@
                 'font-family': 'sans-serif',
                 'padding': '2px 5px',
                 'margin': '1px 3px',
-                'width': '10px',
+                'min-width': '10px',
                 'cursor': 'pointer'
 			      });
 			      selectElement.css({
