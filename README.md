@@ -66,7 +66,7 @@ Options
    
   * ``slideEffect``
    *Requires jQuery UI* 
-   - Set to true, paginit display the pages with a slide effect
+   - Set to true, paginit displays the pages with a slide effect
    - default: `true`
 
   * ``effectDuration``
