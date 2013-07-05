@@ -64,8 +64,14 @@ Options
    - The prefix for css classes
    - default: `'paginit-'`
    
+  * ``slideEffect``
+   *Requires jQuery UI* 
+   - Set to true, paginit display the pages with a slide effect
+   - default: `true`
+
   * ``effectDuration``
-   - The show effect duration
+   *Requires jQuery UI* 
+   - The slide effect duration
    - default: `0`
 
 Example:
