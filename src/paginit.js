@@ -9,7 +9,7 @@
 			    nextContent: '&gt;',
 			    // Requires jQuery UI
 			    slideEffect: true,
-          effectDuration: 0
+          effectDuration: 500
 		    };
 		    if (options) {
 			      $.extend(true, config, options);
