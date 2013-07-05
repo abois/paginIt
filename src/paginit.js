@@ -1,11 +1,14 @@
 (function ($) {
 	  $.fn.paginIt = function (options) {
 		    var config = {
-			    width: 800,
+          current: 0,
 			    matchingElement: 'article',
+			    width: 800,
 			    cssPrefix: 'paginit-',
 			    prevContent: '&lt;',
 			    nextContent: '&gt;',
+			    // Requires jQuery UI
+			    slideEffect: true,
           effectDuration: 0
 		    };
 		    if (options) {
@@ -18,7 +21,7 @@
 			      // Init
 			      elements = $this.find(config.matchingElement);
 			      nbElements = elements.length;
-			      current = 0;
+			      current = config.current;
 			      currentElement = elements.eq(current);
 			
 			      // Build html
@@ -33,6 +36,7 @@
 			      $(config.matchingElement).each(function (i,val) {
 				      $('<option>', {'value': i}).text($(val).attr('data-title') ? $(val).attr('data-title') : i+1).appendTo(selectElement);
 			      });
+			      selectElement.val(current);
 			      nextElement = $('<span>', {'class': config.cssPrefix+'next'}).html(config.nextContent).appendTo(navbar);
 
 			      // build css
@@ -77,9 +81,10 @@
 			      });
 
 			      if(current === 0) {
-			          prevElement.css({'opacity': 0.5, 'cursor': 'default'});
-			      } else if(current === nbElements) {
-			          nextElement.css({'opacity': 0.5, 'cursor': 'default'});
+			          prevElement.css({'opacity': 0.5, 'cursor': 'default'}).addClass(config.cssPrefix+'disabled');
+			      }
+			      if(current === nbElements-1) {
+			          nextElement.css({'opacity': 0.5, 'cursor': 'default'}).addClass(config.cssPrefix+'disabled');
 			      }
 
 			      // EVENTS
@@ -96,15 +101,23 @@
 		    });
 	      function goTo(element) {
             elements.eq(current).hide();
+            if(config.slideEffect)
+                if(jQuery.ui)
+                    elements.eq(element).show().effect('slide', {direction: current<element ? 'right' : 'left'}, config.effectDuration);
+                else {
+                    elements.eq(element).show();
+                    console.warn('To use the slide effect, you need to import jQuery UI.');
+                }
+            else
+                elements.eq(element).show();
             current = element;
-            elements.eq(current).show(config.effectDuration);
             selectElement.val(current);
-            prevElement.css({'opacity': 1, 'cursor': 'pointer'});
-            nextElement.css({'opacity': 1, 'cursor': 'pointer'});
+            prevElement.css({'opacity': 1, 'cursor': 'pointer'}).removeClass(config.cssPrefix+'disabled');
+            nextElement.css({'opacity': 1, 'cursor': 'pointer'}).removeClass(config.cssPrefix+'disabled');
             if(!hasNext())
-                nextElement.css({'opacity': 0.5, 'cursor': 'default'});
+                nextElement.css({'opacity': 0.5, 'cursor': 'default'}).addClass(config.cssPrefix+'disabled');
             if(!hasPrev())
-				        prevElement.css({'opacity': 0.5, 'cursor': 'default'});
+				        prevElement.css({'opacity': 0.5, 'cursor': 'default'}).addClass(config.cssPrefix+'disabled');
 		    }
 		
 		    function next() {
