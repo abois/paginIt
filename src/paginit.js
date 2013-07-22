@@ -3,13 +3,17 @@
 		    var config = {
           current: 0,
 			    matchingElement: 'article',
-			    width: 800,
+			    width: '100%',
 			    cssPrefix: 'paginit-',
 			    prevContent: '&lt;',
 			    nextContent: '&gt;',
 			    // Requires jQuery UI
 			    slideEffect: true,
-          effectDuration: 500
+          effectDuration: 500,
+          beforeNext: null,
+          beforePrev: null,
+          AfterNext: null,
+          AfterPrev: null
 		    };
 		    if (options) {
 			      $.extend(true, config, options);
@@ -22,7 +26,7 @@
 			      elements = $this.find(config.matchingElement);
 			      nbElements = elements.length;
 			      current = config.current;
-			      currentElement = elements.eq(current);
+			      currentElement = elements.eq(current).addClass(config.cssPrefix + 'current');
 			
 			      // Build html
 			      wrapper = $('<div>', {'class': 'paginit-wrapper'}).appendTo($this);
@@ -100,16 +104,16 @@
 			      });
 		    });
 	      function goTo(element) {
-            elements.eq(current).hide();
+            elements.eq(current).removeClass(config.cssPrefix + 'current').hide();
             if(config.slideEffect)
                 if(jQuery.ui)
-                    elements.eq(element).show().effect('slide', {direction: current<element ? 'right' : 'left'}, config.effectDuration);
+                    elements.eq(element).addClass(config.cssPrefix + 'current').show().effect('slide', {direction: current<element ? 'right' : 'left'}, config.effectDuration);
                 else {
                     elements.eq(element).show();
                     console.warn('To use the slide effect, you need to import jQuery UI.');
                 }
             else
-                elements.eq(element).show();
+                elements.eq(element).addClass(config.cssPrefix + 'current').show();
             current = element;
             selectElement.val(current);
             prevElement.css({'opacity': 1, 'cursor': 'pointer'}).removeClass(config.cssPrefix+'disabled');
@@ -121,13 +125,31 @@
 		    }
 		
 		    function next() {
-            if(hasNext())
-                goTo(parseInt(current)+1);
+            if(hasNext()) {
+                if(typeof(config.beforeNext) === 'function')
+                    if(config.beforeNext() !== false)
+                        goTo(parseInt(current)+1);
+                    else
+                        return false;
+                else
+                    goTo(parseInt(current)+1);
+                if(typeof(config.afterNext) === 'function')
+                    config.afterNext();
+            }
 		    }
 		
 		    function prev() {
-            if(hasPrev())
-                goTo(parseInt(current)-1);
+            if(hasPrev()) {
+                if(typeof(config.beforePrev) === 'function')
+                    if(config.beforePrev())
+                        goTo(parseInt(current)-1);
+                     else
+                        return false;
+                else
+                    goTo(parseInt(current)-1);
+                if(typeof(config.afterPrev) === 'function')
+                    config.afterPrev();
+            }
 		    }
 		
 		    function hasNext() {
