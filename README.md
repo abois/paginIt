@@ -9,6 +9,9 @@ In the `head` you need :
 
 ```html
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <!-- Required if you want the slide effect -->
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <!---->
     <script src="../src/paginit.js"></script>
     <script>
     $(document).ready(function () {
@@ -64,8 +67,14 @@ Options
    - The prefix for css classes
    - default: `'paginit-'`
    
+  * ``slideEffect``
+   *Requires jQuery UI* 
+   - Set to true, paginit displays the pages with a slide effect
+   - default: `true`
+
   * ``effectDuration``
-   - The show effect duration
+   *Requires jQuery UI* 
+   - The slide effect duration
    - default: `0`
 
 Example:
