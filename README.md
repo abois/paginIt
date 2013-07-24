@@ -5,14 +5,14 @@ A light jQuery plugin for pagination
 
 Usage
 -----
-In the `head` you need :
+In the html `head` you need :
 
 ```html
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <!-- Required if you want the slide effect -->
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <!---->
-    <script src="../src/paginit.js"></script>
+    <script src="path/to/paginit.js"></script>
     <script>
     $(document).ready(function () {
         $('#book').paginIt();
@@ -53,7 +53,7 @@ Options
    
   * ``width``
    - The elements width
-   - default: `'800'`
+   - default: `'100%'`
    
   * ``navBarPosition``
    - The pagination navbar position. Expected values are ``top`` or ``bottom``
@@ -81,6 +81,9 @@ Options
    - The slide effect duration
    - default: `0`
 
+  * ``beforeNext`` ``afterNext`` ``beforePrev`` ``afterPrev``
+   - Function to call before or after rendering the next or previous page
+   - default: `null`
 
 Example:
 
