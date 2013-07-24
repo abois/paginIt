@@ -9,12 +9,12 @@
           prevContent: '&lt;',
           nextContent: '&gt;',
           // Requires jQuery UI
-          slideEffect: true,
+          useSlideEffect: true,
           effectDuration: 500,
           beforeNext: null,
           beforePrev: null,
-          AfterNext: null,
-          AfterPrev: null
+          afterNext: null,
+          afterPrev: null
         };
         if (options) {
             $.extend(true, config, options);
@@ -116,7 +116,7 @@
         });
         function goTo(element) {
             elements.eq(current).removeClass(config.cssPrefix + 'current').hide();
-            if(config.slideEffect)
+            if(config.useSlideEffect)
                 if(jQuery.ui)
                     elements.eq(element).addClass(config.cssPrefix + 'current').show().effect('slide', {direction: current<element ? 'right' : 'left'}, config.effectDuration);
                 else {
