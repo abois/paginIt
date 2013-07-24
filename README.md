@@ -46,7 +46,10 @@ The `data-title` attribute is used to display the pages title in the navigator.
 
 Options
 -------
- 
+  * `current`
+    - The current index page to display. The index page is zero-based.
+    - default: `'0'`
+
   * `matchingElement`
     - The elements to match for pagination
     - default: `'article'`
