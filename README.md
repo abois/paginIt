@@ -42,7 +42,7 @@ In convallis commodo justo at tincidunt. Integer vel turpis vitae ipsum vestibul
       </article>
     </section>
 ```
-The `data-title` attribute is used to display the pages title in the navigator.
+The `data-title` attribute is used to display the pages title in the navbar.
 
 Options
 -------
