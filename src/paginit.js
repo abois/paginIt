@@ -54,7 +54,7 @@
             selectElement.val(current);
             nextElement = $('<span>', {'class': config.cssPrefix+'next'}).html(config.nextContent).appendTo(navbar);
 
-            // build css
+            // Build css
             wrapper.css({
                 'overflow': 'hidden',
                 'width': config.width,
@@ -108,10 +108,10 @@
                 goTo(val);
             });
             nextElement.on('click', function () {
-              next();
+                next();
             });
             prevElement.on('click', function () {
-              prev();
+                prev();
             });
         });
         function goTo(element) {
