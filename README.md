@@ -55,6 +55,10 @@ Options
    - The elements width
    - default: `'800'`
    
+  * ``navBarPosition``
+   - The pagination navbar position. Expected values are ``top`` or ``bottom``
+   - default: `top`
+ 
   * ``prevContent``
    - The prev button html content
    - default: `'&lt;'`
@@ -76,6 +80,7 @@ Options
    *Requires jQuery UI* 
    - The slide effect duration
    - default: `0`
+
 
 Example:
 
