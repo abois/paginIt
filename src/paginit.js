@@ -116,41 +116,30 @@
         });
 
         function goTo(element) {
-            for(i=current;i<element;i++)
-                next();
-            for(i=current;i>element;i--)
-                prev();
+            if(current<element) {
+                for(i=current;i<element;i++)
+                    if(!_processNext()) {
+                        break;
+                    }
+                _processPage('next');
+            } else if(current>element) {
+                for(i=current;i>element;i--)
+                    if(!_processPrev()) {
+                        break;
+                    }
+                _processPage('prev');
+            }
         }
 
         function next() {
-            if(hasNext()) {
-                if(typeof(config.beforeNext) === 'function')
-                    if(config.beforeNext() !== false) {
-                        _processNext();
-                    } else {
-                        selectElement.val(current);
-                        return false;
-                    }
-                else
-                    _processNext();
-                if(typeof(config.afterNext) === 'function')
-                    config.afterNext();
+            if(_processNext()) {
+                _processPage('next');
             }
         }
 
         function prev() {
-            if(hasPrev()) {
-                if(typeof(config.beforePrev) === 'function')
-                    if(config.beforePrev() !== false) {
-                        _processPrev();
-                     } else {
-                        selectElement.val(current);
-                        return false;
-                     }
-                else
-                    _processPrev()
-                if(typeof(config.afterPrev) === 'function')
-                    config.afterPrev();
+            if(_processPrev()) {
+                _processPage('prev');
             }
         }
 
@@ -169,32 +158,62 @@
         }
 
         function _processNext() {
-            _processPage(parseInt(current)+1);
-            prevElement.css({'opacity': 1, 'cursor': 'pointer'}).removeClass(config.cssPrefix+'disabled');
-            if(!hasNext())
-                nextElement.css({'opacity': 0.5, 'cursor': 'default'}).addClass(config.cssPrefix+'disabled');
+            if(hasNext()) {
+                if(typeof(config.beforeNext) === 'function')
+                    if(config.beforeNext() !== false) {
+                        current++;
+                    } else {
+                        selectElement.val(current);
+                        return false;
+                    }
+                else
+                    current++;
+                if(typeof(config.afterNext) === 'function')
+                    config.afterNext();
+                return true;
+            }
+            return false;
         }
 
         function _processPrev() {
-            _processPage(parseInt(current)-1);
-            nextElement.css({'opacity': 1, 'cursor': 'pointer'}).removeClass(config.cssPrefix+'disabled');
-            if(!hasPrev())
-                prevElement.css({'opacity': 0.5, 'cursor': 'default'}).addClass(config.cssPrefix+'disabled');
+            if(hasPrev()) {
+                if(typeof(config.beforePrev) === 'function')
+                    if(config.beforePrev() !== false) {
+                        current--;
+                     } else {
+                        selectElement.val(current);
+                        return false;
+                     }
+                else
+                    current--;
+                if(typeof(config.afterPrev) === 'function')
+                    config.afterPrev();
+                return true;
+            }
+            return false;
         }
 
-        function _processPage(element) {
-            elements.eq(current).removeClass(config.cssPrefix + 'current').hide();
+        function _processPage(direction) {
+            $('.' + config.cssPrefix + 'current').removeClass(config.cssPrefix + 'current').hide();
             if(config.useSlideEffect)
                 if(jQuery.ui)
-                    elements.eq(element).addClass(config.cssPrefix + 'current').show().effect('slide', {direction: current<element ? 'right' : 'left'}, config.effectDuration);
+                    elements.eq(current).addClass(config.cssPrefix + 'current').show().effect('slide', {direction: direction === 'next' ? 'left' : 'right'}, config.effectDuration);
                 else {
-                    elements.eq(element).show();
+                    elements.eq(current).addClass(config.cssPrefix + 'current').show();
                     console.warn('To use the slide effect, you need to import jQuery UI.');
                 }
             else
-                elements.eq(element).addClass(config.cssPrefix + 'current').show();
-            current = element;
+                elements.eq(current).addClass(config.cssPrefix + 'current').show();
             selectElement.val(current);
+            if(direction === 'next') {
+                prevElement.css({'opacity': 1, 'cursor': 'pointer'}).removeClass(config.cssPrefix+'disabled');
+                if(!hasNext())
+                    nextElement.css({'opacity': 0.5, 'cursor': 'default'}).addClass(config.cssPrefix+'disabled');
+            } else {
+                nextElement.css({'opacity': 1, 'cursor': 'pointer'}).removeClass(config.cssPrefix+'disabled');
+                if(!hasPrev())
+                    prevElement.css({'opacity': 0.5, 'cursor': 'default'}).addClass(config.cssPrefix+'disabled');
+            }
         }
     };
 })(jQuery);
