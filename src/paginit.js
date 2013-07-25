@@ -114,36 +114,23 @@
                 prev();
             });
         });
+
         function goTo(element) {
-            elements.eq(current).removeClass(config.cssPrefix + 'current').hide();
-            if(config.useSlideEffect)
-                if(jQuery.ui)
-                    elements.eq(element).addClass(config.cssPrefix + 'current').show().effect('slide', {direction: current<element ? 'right' : 'left'}, config.effectDuration);
-                else {
-                    elements.eq(element).show();
-                    console.warn('To use the slide effect, you need to import jQuery UI.');
-                }
-            else
-                elements.eq(element).addClass(config.cssPrefix + 'current').show();
-            current = element;
-            selectElement.val(current);
-            prevElement.css({'opacity': 1, 'cursor': 'pointer'}).removeClass(config.cssPrefix+'disabled');
-            nextElement.css({'opacity': 1, 'cursor': 'pointer'}).removeClass(config.cssPrefix+'disabled');
-            if(!hasNext())
-                nextElement.css({'opacity': 0.5, 'cursor': 'default'}).addClass(config.cssPrefix+'disabled');
-            if(!hasPrev())
-                prevElement.css({'opacity': 0.5, 'cursor': 'default'}).addClass(config.cssPrefix+'disabled');
+            while(current<element)
+                next();
+            while(current>element)
+                prev();
         }
 
         function next() {
             if(hasNext()) {
                 if(typeof(config.beforeNext) === 'function')
-                    if(config.beforeNext() !== false)
-                        goTo(parseInt(current)+1);
-                    else
+                    if(config.beforeNext() !== false) {
+                        _processNext();
+                    } else
                         return false;
                 else
-                    goTo(parseInt(current)+1);
+                    _processNext();
                 if(typeof(config.afterNext) === 'function')
                     config.afterNext();
             }
@@ -153,11 +140,11 @@
             if(hasPrev()) {
                 if(typeof(config.beforePrev) === 'function')
                     if(config.beforePrev())
-                        goTo(parseInt(current)-1);
+                        _processPrev();
                      else
                         return false;
                 else
-                    goTo(parseInt(current)-1);
+                    _processPrev()
                 if(typeof(config.afterPrev) === 'function')
                     config.afterPrev();
             }
@@ -175,6 +162,35 @@
                 return false;
             }
             return true;
+        }
+
+        function _processNext() {
+            _processPage(parseInt(current)+1);
+            prevElement.css({'opacity': 1, 'cursor': 'pointer'}).removeClass(config.cssPrefix+'disabled');
+            if(!hasNext())
+                nextElement.css({'opacity': 0.5, 'cursor': 'default'}).addClass(config.cssPrefix+'disabled');
+        }
+
+        function _processPrev() {
+            _processPage(parseInt(current)-1);
+            nextElement.css({'opacity': 1, 'cursor': 'pointer'}).removeClass(config.cssPrefix+'disabled');
+            if(!hasPrev())
+                prevElement.css({'opacity': 0.5, 'cursor': 'default'}).addClass(config.cssPrefix+'disabled');
+        }
+
+        function _processPage(element) {
+            elements.eq(current).removeClass(config.cssPrefix + 'current').hide();
+            if(config.useSlideEffect)
+                if(jQuery.ui)
+                    elements.eq(element).addClass(config.cssPrefix + 'current').show().effect('slide', {direction: current<element ? 'right' : 'left'}, config.effectDuration);
+                else {
+                    elements.eq(element).show();
+                    console.warn('To use the slide effect, you need to import jQuery UI.');
+                }
+            else
+                elements.eq(element).addClass(config.cssPrefix + 'current').show();
+            current = element;
+            selectElement.val(current);
         }
     };
 })(jQuery);
