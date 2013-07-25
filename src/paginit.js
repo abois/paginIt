@@ -116,9 +116,9 @@
         });
 
         function goTo(element) {
-            while(current<element)
+            for(i=current;i<element;i++)
                 next();
-            while(current>element)
+            for(i=current;i>element;i--)
                 prev();
         }
 
@@ -127,8 +127,10 @@
                 if(typeof(config.beforeNext) === 'function')
                     if(config.beforeNext() !== false) {
                         _processNext();
-                    } else
+                    } else {
+                        selectElement.val(current);
                         return false;
+                    }
                 else
                     _processNext();
                 if(typeof(config.afterNext) === 'function')
@@ -139,10 +141,12 @@
         function prev() {
             if(hasPrev()) {
                 if(typeof(config.beforePrev) === 'function')
-                    if(config.beforePrev())
+                    if(config.beforePrev() !== false) {
                         _processPrev();
-                     else
+                     } else {
+                        selectElement.val(current);
                         return false;
+                     }
                 else
                     _processPrev()
                 if(typeof(config.afterPrev) === 'function')
