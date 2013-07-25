@@ -5,14 +5,14 @@ A light jQuery plugin for pagination
 
 Usage
 -----
-In the `head` you need :
+In the html `head` you need :
 
 ```html
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <!-- Required if you want the slide effect -->
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <!---->
-    <script src="../src/paginit.js"></script>
+    <script src="path/to/paginit.js"></script>
     <script>
     $(document).ready(function () {
         $('#book').paginIt();
@@ -42,18 +42,21 @@ In convallis commodo justo at tincidunt. Integer vel turpis vitae ipsum vestibul
       </article>
     </section>
 ```
-The `data-title` attribute is used to display the pages title in the navigator.
+The `data-title` attribute is used to display the pages title in the navbar.
 
 Options
 -------
- 
+  * `current`
+    - The current index page to display. The page indexes are zero-based.
+    - default: `'0'`
+
   * `matchingElement`
     - The elements to match for pagination
     - default: `'article'`
    
   * ``width``
    - The elements width
-   - default: `'800'`
+   - default: `'100%'`
    
   * ``navBarPosition``
    - The pagination navbar position. Expected values are ``top`` or ``bottom``
@@ -81,6 +84,9 @@ Options
    - The slide effect duration
    - default: `0`
 
+  * ``beforeNext`` ``afterNext`` ``beforePrev`` ``afterPrev``
+   - Function to call before or after rendering the next or previous page
+   - default: `null`
 
 Example:
 
